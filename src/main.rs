@@ -5,21 +5,22 @@ use std::io::{BufRead, BufReader};
 // this is my first ever rust program
 // it is awful! but working...
 fn main() {
-    let file = File::open("src/input.txt").unwrap();
-    let reader = BufReader::new(file);
+    let file = File::open("src/input.txt").expect("no such file");
+    let buf = BufReader::new(file);
+    let lines: Vec<i32> = buf.lines()
+        .map(|l| l.unwrap().parse::<i32>().unwrap())
+        .collect();
     
     // part 1
-    let mut prev: i32 = 0;
+    let mut prev: i32 = lines[0];
     let mut counter = 0;
-    for (index, line) in reader.lines().enumerate() {
-        let meter = line.unwrap().parse::<i32>().unwrap();
+    for i in 1..lines.len() {
+        let current = lines[i];
 
-        if index > 0 {
-            if meter > prev {
-                counter = counter + 1;
-            }
+        if current > prev {
+            counter = counter + 1;
         }
-        prev = meter;    
+        prev = current;    
     }
     println!("{}", counter);
 }
