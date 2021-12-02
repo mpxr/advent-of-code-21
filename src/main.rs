@@ -44,9 +44,9 @@ fn day_2() {
     let mut horizontal_position = 0;
     let mut depth = 0;
     for i in 0..lines.len() {
-        let split: Vec<&str> = lines[i].split(" ").collect();
-        let command = split[0];
-        let x = split[1].parse::<i32>().unwrap();
+        let mut iter = lines[i].split(' ');
+        let command = iter.next().unwrap();
+        let x = iter.next().unwrap().parse::<i32>().unwrap();
 
         if command == "forward" {
             horizontal_position = horizontal_position + x;
@@ -68,9 +68,9 @@ fn day_2() {
     let mut aim = 0;
 
     for i in 0..lines.len() {
-        let split: Vec<&str> = lines[i].split(" ").collect();
-        let command = split[0];
-        let x = split[1].parse::<i32>().unwrap();
+        let mut iter = lines[i].split(' ');
+        let command = iter.next().unwrap();
+        let x = iter.next().unwrap().parse::<i32>().unwrap();
 
         if command == "down" {
             aim = aim + x;
