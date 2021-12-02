@@ -46,22 +46,48 @@ fn day_2() {
     for i in 0..lines.len() {
         let split: Vec<&str> = lines[i].split(" ").collect();
         let command = split[0];
-        let units = split[1].parse::<i32>().unwrap();
+        let x = split[1].parse::<i32>().unwrap();
 
         if command == "forward" {
-            horizontal_position = horizontal_position + units;
+            horizontal_position = horizontal_position + x;
         } else if command == "down" {
-            depth = depth + units;
+            depth = depth + x;
         } else if command == "up" {
-            depth = depth - units;
+            depth = depth - x;
         }
     }
     println!(
-        "Horizontal pos: {}, Depth: {}, Sum: {}",
+        "PART 1. Horizontal pos: {}, Depth: {}, Sum: {}",
         horizontal_position,
         depth,
         horizontal_position * depth
     );
+
+    let mut fixed_horizontal_pos = 0;
+    let mut fixed_depth = 0;
+    let mut aim = 0;
+
+    for i in 0..lines.len() {
+        let split: Vec<&str> = lines[i].split(" ").collect();
+        let command = split[0];
+        let x = split[1].parse::<i32>().unwrap();
+
+        if command == "down" {
+            aim = aim + x;
+        } else if command == "up" {
+            aim = aim - x;
+        } else if command == "forward" {
+            fixed_horizontal_pos = fixed_horizontal_pos + x;
+            fixed_depth = fixed_depth + aim * x;
+        }
+    }
+
+    println!(
+        "PART 2. Horizontal pos: {}, Depth: {}, Sum: {}",
+        fixed_horizontal_pos,
+        fixed_depth,
+        fixed_horizontal_pos * fixed_depth
+    );    
 }
 
 fn main() {
