@@ -44,7 +44,7 @@ fn day_2() {
     let mut horizontal_position = 0;
     let mut depth = 0;
     for i in 0..lines.len() {
-        let mut iter = lines[i].split(' ');
+        let mut iter = lines[i].split_whitespace();
         let command = iter.next().unwrap();
         let x = iter.next().unwrap().parse::<i32>().unwrap();
 
@@ -68,7 +68,7 @@ fn day_2() {
     let mut aim = 0;
 
     for i in 0..lines.len() {
-        let mut iter = lines[i].split(' ');
+        let mut iter = lines[i].split_whitespace();
         let command = iter.next().unwrap();
         let x = iter.next().unwrap().parse::<i32>().unwrap();
 
