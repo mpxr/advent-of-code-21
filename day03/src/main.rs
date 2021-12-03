@@ -16,19 +16,21 @@ fn reduce(ls: &mut [String], pos: usize, criteria: String) -> String {
         }
     }
 
+    let mut winners;
     if criteria == "most_common" {
-        if ones.len() >= zeros.len() {
-            return reduce(&mut ones, pos + 1, criteria);
+        winners = if ones.len() >= zeros.len() {
+            ones
         } else {
-            return reduce(&mut zeros, pos + 1, criteria);
+            zeros
         };
     } else {
-        if ones.len() < zeros.len() {
-            return reduce(&mut ones, pos + 1, criteria);
+        winners = if ones.len() < zeros.len() {
+            ones
         } else {
-            return reduce(&mut zeros, pos + 1, criteria);
+            zeros
         };
     }
+    return reduce(&mut winners, pos + 1, criteria);
 }
 
 fn main() {
