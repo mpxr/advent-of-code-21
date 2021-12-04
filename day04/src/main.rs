@@ -1,6 +1,12 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
+#[derive(Debug)]
+struct Win {
+    sum: i32,
+    number_called: i32,
+}
+
 fn main() {
     let file = File::open("src/input.txt").expect("no such file");
     let buf = BufReader::new(file);
@@ -24,23 +30,54 @@ fn main() {
         i += 1;
     }
 
+    let mut first_win: Win = Win {
+        sum: 0 - 1,
+        number_called: -1,
+    };
+    let mut last_win: Win = Win {
+        sum: -1,
+        number_called: -1,
+    };
+
     let input = lines[0].split(',');
-    'outer: for value in input {
+
+    let mut won_boards: Vec<i32> = Vec::new();
+
+    for value in input {
         let i_value = value.parse::<i32>().unwrap();
-        for board in boards.iter_mut() {
+
+        for (board_index, board) in boards.iter_mut().enumerate() {
             mark_board(board, i_value);
             let board_value: i32 = check_board(board);
             if board_value > 0 {
-                println!(
-                    "Sum: {}, Number called: {}, Result: {}",
-                    board_value,
-                    i_value,
-                    board_value * i_value
-                );
-                break 'outer;
+                if first_win.sum == -1 {
+                    first_win = Win {
+                        sum: board_value,
+                        number_called: i_value,
+                    };
+                }
+
+                if !won_boards.contains(&(board_index as i32)) {
+                    last_win = Win {
+                        sum: board_value,
+                        number_called: i_value,
+                    };
+                    won_boards.push(board_index as i32);
+                }
             }
         }
     }
+
+    println!(
+        "PART 1. Win: {:?}, Result: {}",
+        first_win,
+        first_win.sum * first_win.number_called
+    );
+    println!(
+        "PART 2. Win: {:?}, Result: {}",
+        last_win,
+        last_win.sum * last_win.number_called
+    );
 }
 
 fn mark_board(board: &mut [[i32; 5]; 5], num: i32) {
@@ -56,7 +93,6 @@ fn mark_board(board: &mut [[i32; 5]; 5], num: i32) {
 fn check_board(board: &mut [[i32; 5]; 5]) -> i32 {
     let mut hor_complete = false;
     let mut vert_complete = false;
-
 
     for i in 0..5 {
         let row_sum: i32 = board[i].iter().sum();
